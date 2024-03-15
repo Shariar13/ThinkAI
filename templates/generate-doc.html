@@ -1,0 +1,64 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <br>
+    <br>
+    <h5><b>Generate Your Assignment With ThinkAI(DOCX)</b></h5>
+    <br>
+    <br>
+    <form id="contentForm" action="{% url 'generate_doc_upload' %}" method="POST" onsubmit="handleFormSubmit(event)">
+        {% csrf_token %}
+        <input name="title" class="form-control t" type="text" placeholder="Title">
+        <br>
+        <input name="description" class="form-control d" type="text" placeholder="Description">
+        <br>
+        <input id="submitButton" class="form-control s" type="submit" value="Create & Download">
+    </form>
+    <div id="loading" style="display: none;">
+        <div class="progress" style="height: 29px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                style="width: 0%; height: 29px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Creating it may take up to 5 minutes</div>
+        </div>
+    </div>
+    <!-- Your HTML content -->
+    <br>
+    <br>
+    {% if doc_content %}
+    <a class="form-control s"
+        href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,{{ doc_content }}"
+        download="Generated_Document.docx">Download DOCX
+    </a>
+    {% endif %}
+
+    <!-- Other HTML elements -->
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        $('#submitButton').hide();
+        $('#loading').show();
+        document.getElementById('contentForm').submit();
+
+        // Simulate a delay (replace this with your actual content generation logic)
+        var progress = 0;
+        var interval = setInterval(function () {
+            progress += 10;
+            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 500); // Change this interval to match your content generation time
+    }
+</script>
+{% endblock content %}

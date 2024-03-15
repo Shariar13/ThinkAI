@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h5>Explore our open positions across three categories. Choose your category and apply now.</h5>
+    <br>
+    <br>
+    <form action="{% url 'job_application' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select class="form-control" id="category" name="category">
+                <option value="Graphics Designer">Graphics Designer</option>
+                <option value="Web Developer">Web Developer</option>
+                <option value="Content Writing">Content Writing</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="tel" class="form-control" id="phone" name="phone" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" class="form-control" id="country" name="country" required>
+        </div>
+        <div class="form-group">
+            <label for="cv">CV:</label>
+            <input type="file" class="form-control-file" id="cv" name="cv" required>
+        </div>
+        <div class="form-group">
+            <label for="photo">Photo:</label>
+            <input type="file" class="form-control-file" id="photo" name="photo" required>
+        </div>
+        <div class="form-group">
+            <label for="education">Last Education:</label>
+            <input type="text" class="form-control" id="education" name="education" required>
+        </div>
+        <div class="form-group">
+            <label for="experience">Experience (optional):</label>
+            <textarea class="form-control" id="experience" name="experience" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+{% endblock content %}

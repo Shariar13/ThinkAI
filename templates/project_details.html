@@ -1,0 +1,116 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .post-author {
+    color: white;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: black;
+    text-decoration: none;
+  }
+</style>
+
+
+
+<div class="page-section pt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="blog-single-wrap">
+          <div class="header">
+            <div class="post-thumb">
+              <img src="{{ projects.photo.url }}" alt="">
+            </div>
+            <div class="meta-header">
+              <div class="post-author">
+                <a style="color: white;">@{{ projects.username }}</a>
+              </div>
+            </div>
+          </div>
+          <h1 class="post-title">{{ projects.name }}</h1>
+          <div class="post-meta">
+            <div class="post-date">
+              <span class="icon">
+                <span class="mai-time-outline"></span>
+              </span> <a href="#">{{ projects.date }}</a>
+            </div>
+            <div class="post-comment-count ml-2">
+              <span class="icon">
+                <span class="mai-chatbubbles-outline"></span>
+              </span> <span style="color: green;">Available BDT {{ projects.price }}</span>
+            </div>
+          </div>
+          <div class="post-content">
+            <p>{{ projects.description }}</p>
+            <hr>
+            <form action="{% url 'buy_project' %}" method="post" enctype="multipart/form-data" id="buyProjectForm">
+              {% csrf_token %}
+              <input type="hidden" name="buyer_name" value="{{ user.get_full_name }}">
+              <input type="hidden" name="buyer_username" value="{{ user.username }}">
+              <input type="hidden" name="buyer_email" value="{{ user.email }}">
+              <input type="hidden" name="seller_name" value="{{ projects.name }}">
+              <input type="hidden" name="seller_username" value="{{ projects.username }}">
+              <input type="hidden" name="seller_email" value="{{ projects.email }}">
+              <input type="hidden" name="type" value="{{ projects.type }}">
+              <input type="hidden" name="price" value="{{ projects.price }}">
+              <input type="hidden" name="description" value="{{ projects.description }}">
+              <input type="hidden" name="photo" value="{{ projects.photo }}">
+              <input type="hidden" name="project" value="{{ projects.pk }}">
+              <button class="btn btn-secondary" type="submit">Buy This Project</button>
+          </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="widget">
+          <!-- Widget recent post -->
+          <div class="widget-box">
+            <h4 class="widget-title">Recent Project</h4>
+            <div class="divider"></div>
+
+
+            {% for project in project %}
+            <a href="{% url 'ProjectDetail' project.pk %}">
+              <div class="blog-item">
+                <span class="post-thumb">
+                  <img src="{{ project.photo.url }}" alt="">
+                </span>
+                <div class="content">
+                  <h6 class="post-title"><span>{{ project.name }}</span></h6>
+                  <div class="meta">
+                    <span class="mai-calendar"></span> {{ project.date }}
+                    <span class="mai-person"></span>{{ project.username }}
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            {% endfor %}
+
+          </div>
+
+          <!-- Widget Tag Cloud -->
+          <div class="widget-box">
+            <h4 class="widget-title">Type</h4>
+            <div class="divider"></div>
+
+            <div class="tag-clouds">
+              <a href="" class="tag-cloud-link">{{ projects.type }}</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,145 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .img {
+    width: 300px !important;
+  }
+
+  .click_to_buy {
+    color: white !important;
+    cursor: pointer;
+  }
+
+  .project_shop {
+    color: #6C55F9 !important;
+  }
+
+  @media screen and (max-width:449px) {
+    .click_to_buy {
+      margin-top: 29px;
+    }
+
+  }
+</style>
+
+</header>
+
+<div class="page-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10">
+        <form action="#" class="form-search-blog">
+          <div class="input-group">
+            <form action="{% url 'community' %}" method="GET">
+              <div class="input-group-prepend">
+                <select id="categories" class="custom-select bg-light" name="filter">
+                  <option>All Categories</option>
+                  <option value="website">Website</option>
+                  <option value="android">Android</option>
+                  <option value="machineLearning">Machine Learning</option>
+                </select>
+              </div>
+              <button class="btn btn-secondary" style="margin-right: 29px;" type="submit">Filter <span
+                  class="mai-filter"></span></button>
+            </form>
+            <a class="btn btn-secondary click_to_buy" data-toggle="modal" data-target="#staticBackdrop">Click To
+              Sell</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+    <div class="row my-5">
+      {% for projects in projects %}
+      <a href="{% url 'ProjectDetail' projects.pk %}">
+        <div class="col-lg-3 py-3">
+          <div class="card-blog">
+            <div class="header">
+              <div class="post-thumb">
+                <img class="img" src="{{ projects.photo.url }}" alt="">
+              </div>
+            </div>
+            <div class="body">
+              <h5 class="post-title"><a>{{ projects.name|truncatechars:15 }}</a></h5>
+              <div class="post-date">Type: <a>{{ projects.type }}</a></div>
+              <div class="post-date">Price: <a>BDT {{ projects.price }}</a></div>
+            </div>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{% url 'upload_your_project' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+              <label for="name">Project Title:</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="username" style="display: none;">Username:</label>
+              <input type="hidden" class="form-control" id="username" name="username" value="{{ user.username }}">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" required value="{{ user.email }}">
+            </div>
+
+            <div class="form-group">
+              <label for="projectPicture">Project Picture:</label>
+              <input type="file" class="form-control" id="projectPicture" name="photo" accept="image/*">
+            </div>
+
+            <div class="form-group">
+              <label for="projectType">Project Type:</label>
+              <select class="form-control" id="projectType" name="type">
+                <option value="website">Website</option>
+                <option value="android">Android</option>
+                <option value="machineLearning">Machine Learning</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="price">Price:</label>
+              <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+{% endblock content %}
